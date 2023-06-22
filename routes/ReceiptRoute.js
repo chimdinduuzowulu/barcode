@@ -3,7 +3,8 @@ const receiptController = require('../controllers/ReceiptController');
 
 router.get('/',receiptController.getReceipts);
 // 
-router.get('/:receiptId',receiptController.getReceipt);
+router.get('/:monthYear',receiptController.getReceipt);
+router.get('/filter/:Year',receiptController.getReceiptsByYear);
 // 
 router.post('/',receiptController.createReceipt);
 
