@@ -50,9 +50,8 @@ const checkLogin = async (req, res) => {
         process.env.JWT_SECRETE_KEY,
         { expiresIn: '1d' }
       );
-      // console.log('token', token);
-      res.cookie('token', token, { httpOnly: true, expiresIn: '1d' });
-      res.status(200).json({ message: 'Login successful' });
+      res.cookie('token', token, { httpOnly: true, maxAge: 24 * 60 * 60 });
+      res.status(200).json({ message: 'Login successful', token });
     } else {
       res.status(400).json({ message: 'Incorrect login credentials' });
     }
