@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "chimdindu",
-    "database": "laision_receipt_db",
+    "database": "bar_code_scanner",
     "host": "localhost",
     "dialect": "mysql"
   },
@@ -18,7 +18,7 @@
     "password": "BD5toa660kfaV27Pm4rP",
     "database": "railway",
     "host": "containers-us-west-105.railway.app",
-    "port":6192,
+    "port": 6192,
     "dialect": "mysql"
   }
 }
