@@ -1,8 +1,18 @@
-const { Assign } = require("../models");
+const { Assign, Stocks } = require("../models");
 require("dotenv").config();
 
 // create assest
 const assignAsset = async (req, res) => {
+  // ID
+  function generateUniqueId() {
+    const timestamp = new Date().getTime();
+    const randomPart = Math.random().toString(36).substr(2, 5); // Use part of the random string
+
+    const uniqueId = `${timestamp}-${randomPart}`;
+    return uniqueId;
+  }
+
+  const uniqueId = generateUniqueId();
   try {
     const {
       assetName,
@@ -20,18 +30,38 @@ const assignAsset = async (req, res) => {
       dateAssigned,
       assetDefect,
       assignmentDescription,
+      AssignedID: uniqueId,
     });
+    if (createDetails) {
+      const updateAsset = await Stocks.update(
+        {
+          assignedTo: asssetAssignedTo,
+          assigned: true,
+          assetDeffects: assetDefect,
+          AssignedID: uniqueId,
+        },
+        {
+          where: {
+            assetSerialNumber: assetSerialNumber,
+          },
+        }
+      );
 
-    createDetails
-      ? res.status(200).json({ message: "Asset assigned successfuly" })
-      : res.status(401).json({ message: "Asset assignment not succesfull" });
+      updateAsset
+        ? res.status(200).json({ message: "Asset assigned successfuly" })
+        : res
+            .status(301)
+            .json({ message: "Asset assignment and update not succesfull" });
+    } else {
+      res.status(401).json({ message: "Asset assignment not succesfull" });
+    }
   } catch (error) {
     res.status(501).json({ message: error });
   }
 };
 // get asset
 const getAsigned = async (req, res) => {
-  const id = req.params.body;
+  const { id } = req.params;
   try {
     const getDetails = await Assign.findOne({
       where: { id: id },
@@ -67,7 +97,7 @@ const getAllAssigned = async (req, res) => {
 };
 //update asset
 const updateAssigned = async (req, res) => {
-  const id = req.params.body;
+  const { id } = req.params;
   try {
     const {
       assetName,
@@ -107,11 +137,11 @@ const updateAssigned = async (req, res) => {
 
 // Delete Asset
 const deleteAssigned = async (req, res) => {
-  const id = req.params.id;
+  const { AssignedID } = req.params;
   try {
     const deleteAssigned = await Assign.destroy({
       where: {
-        id: id,
+        AssignedID,
       },
     });
     deleteAssigned

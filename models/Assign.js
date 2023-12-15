@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+   
     dateAssigned: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -24,6 +25,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
+    AssignedID: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    
   });
   return Assign;
 };

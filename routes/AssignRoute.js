@@ -8,6 +8,6 @@ router.get("/:id", assignontroller.getAsigned);
 //
 router.post("/", assignontroller.assignAsset);
 router.put("/:id", assignontroller.updateAssigned);
-router.delete("/:id", assignontroller.deleteAssigned);
+router.delete("/:AssignedID", assignontroller.deleteAssigned);
 
 module.exports = router;

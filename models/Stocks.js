@@ -32,6 +32,23 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    assignedTo: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    assigned: {
+      type: DataTypes.BOOLEAN,
+      default: false,
+      allowNull: true,
+    },
+    assetDeffects: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    AssignedID: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   });
   return Stocks;
 };

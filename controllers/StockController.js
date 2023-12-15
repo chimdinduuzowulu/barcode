@@ -1,4 +1,4 @@
-const { Stocks } = require("../models");
+const { Stocks, Assign } = require("../models");
 require("dotenv").config();
 
 // create assest
@@ -35,7 +35,7 @@ const createAsset = async (req, res) => {
 };
 // get asset
 const getAsset = async (req, res) => {
-  const id = req.params.body;
+  const { id } = req.params;
   try {
     const getDetails = await Stocks.findOne({
       where: { id: id },
@@ -67,7 +67,7 @@ const getAssets = async (req, res) => {
 };
 //update asset
 const updateAsset = async (req, res) => {
-  const id = req.params.body;
+  const { id } = req.params;
   try {
     const {
       assetName,
@@ -111,22 +111,49 @@ const updateAsset = async (req, res) => {
 
 // Delete Asset
 const deleteAsset = async (req, res) => {
-  const id = req.params.id;
-  try {
-    const deleteAsset = await Stocks.destroy({
-      where: {
-        id: id,
-      },
-    });
-    deleteAsset
-      ? res.status(200).json({ message: "Asset deleted successfully" })
-      : res.status(401).json({ message: "Asset deletion failed" });
-    return;
-
-    //
-  } catch (error) {
-    console.log(error);
-    res.status(501).json({ error, message: "Internal server error!" });
+  const { id, AssignedID } = req.params;
+  if (!AssignedID) {
+    try {
+      const deleteAsset = await Stocks.destroy({
+        where: {
+          id,
+        },
+      });
+      if (deleteAsset) {
+        res.status(200).json({ message: "Asset deleted successfully" });
+      } else {
+        res.status(401).json({ message: "Asset deletion failed***" });
+      }
+      //
+    } catch (error) {
+      console.log(error);
+      res.status(501).json({ error, message: "Internal server error!" });
+    }
+  }
+  //
+  else {
+    try {
+      const deleteAsset = await Stocks.destroy({
+        where: {
+          id,
+        },
+      });
+      if (deleteAsset) {
+        res.status(200).json({ message: "Asset deleted successfully" });
+        const deleteAssigned = await Assign.destroy({
+          where: {
+            AssignedID,
+          },
+        });
+        deleteAssigned ? console.log() : console.log("Assign deletion error");
+      } else {
+        res.status(401).json({ message: "Asset deletion failed***" });
+      }
+      //
+    } catch (error) {
+      console.log(error);
+      res.status(501).json({ error, message: "Internal server error!" });
+    }
   }
 };
 
